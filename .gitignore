@@ -8,3 +8,5 @@ venv/
 *.pyc
 .env
 .claude/
+config/mcp.json
+config/models.toml

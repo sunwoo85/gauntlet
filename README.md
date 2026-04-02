@@ -25,7 +25,7 @@ pip install -e .
 ```
 Questions (45)
     │
-    ├──► Local model (httpx) ──► responses/{model_id}/*.json
+    ├──► Local model (Claude Code CLI) ──► responses/{model_id}/*.json
     │
     └──► Baselines (Claude Code CLI) ──► responses/{model_id}/*.json
               │                           (Opus, Sonnet, Haiku)
@@ -36,7 +36,9 @@ Questions (45)
          scores/{model_id}/*.json ──► Leaderboard
 ```
 
-45 questions (15 per category) across three professional domains, scored on six dimensions by the latest Opus (max effort) as judge. Three dependencies, no bloat.
+All models run through Claude Code CLI with identical tool access (config/mcp.json). Built-in tools disabled — only MCP tools if configured.
+
+10 pilot questions across three professional domains, scored on six dimensions by the latest Opus (max effort) as judge. Three dependencies, no bloat.
 
 ## Categories
 
@@ -89,7 +91,11 @@ Composite score: weighted sum normalized to 0-100. Weights configurable in `conf
 
 ### Endpoint (`config/models.toml`)
 
-Point at your local model. Model ID, max_tokens, and concurrency are auto-detected. Swap the model behind the endpoint and re-run — new model gets its own results automatically.
+Point at your local model. Copy the example file, then edit. Model ID, max_tokens, and concurrency are auto-detected. Swap the model behind the endpoint and re-run — new model gets its own results automatically.
+
+```bash
+cp config/models.example.toml config/models.toml
+```
 
 ```toml
 [endpoint]
@@ -102,6 +108,14 @@ url = "http://localhost:1319/v1/chat/completions"
 ### Baselines & Judge (`config/judge.toml`)
 
 Three Claude models as baselines (Opus, Sonnet, Haiku), all at high effort. The first baseline listed is the primary hurdle — highlighted in the leaderboard. Judge always uses the latest Opus at max effort. Baselines refresh automatically each month.
+
+### MCP Tools (`config/mcp.json`)
+
+Optional. Copy `mcp.example.json` to `mcp.json` and add MCP servers (e.g. web search). Both baselines and local models get the same tools — no built-in tools, only what you configure here.
+
+```bash
+cp config/mcp.example.json config/mcp.json
+```
 
 ### Metrics (`config/metrics.toml`)
 

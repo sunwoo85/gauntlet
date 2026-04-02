@@ -19,7 +19,7 @@ import tomllib
 from datetime import date
 from pathlib import Path
 
-from .clients import _resolve_model, call_claude_code, call_local
+from .clients import _resolve_model, call_claude_code, call_local_via_claude_code_async
 from .schema import CATEGORY_LABELS, Question
 
 # ── config ──────────────────────────────────────────────────────────────
@@ -85,19 +85,19 @@ def _save_response(dir_name: str, question_id: str, response: dict) -> Path:
 
 # ── runners ─────────────────────────────────────────────────────────────
 async def run_local_model(endpoint: dict, questions: list[Question]) -> int:
-    """Run all questions against the local model at the endpoint."""
+    """Run all questions against the local model via Claude Code CLI."""
     url = endpoint["url"]
+    base_url = url.rsplit("/v1/", 1)[0]
 
     model_id, max_context = await _resolve_model(url)
     max_tokens = max(32768, max_context // 4) if max_context else 32768
     default_concurrency = (max_context // max_tokens) if max_context else 4
     concurrency = endpoint.get("concurrency", default_concurrency)
-    sampling = endpoint.get("sampling")
     dir_name = _safe_dirname(model_id)
 
     print(f"\n{'='*60}")
-    print(f"  {model_id} ({len(questions)} questions, concurrency={concurrency})")
-    print(f"  max_tokens={max_tokens} (quarter of {max_context})")
+    print(f"  {model_id} via Claude Code CLI")
+    print(f"  {len(questions)} questions  concurrency={concurrency}  endpoint={base_url}")
     print(f"{'='*60}\n")
 
     # filter to uncached questions
@@ -116,15 +116,12 @@ async def run_local_model(endpoint: dict, questions: list[Question]) -> int:
 
     async def _run_one(q: Question) -> bool:
         async with sem:
-            messages = [{"role": m.role, "content": m.content} for m in q.prompt.messages]
+            prompt = _build_prompt(q)
             try:
-                resp = await call_local(
-                    endpoint=url,
+                resp = await call_local_via_claude_code_async(
+                    prompt,
+                    base_url=base_url,
                     model_id=model_id,
-                    system=q.prompt.system,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    sampling=sampling,
                 )
                 resp["question_id"] = q.id
                 _save_response(dir_name, q.id, resp)

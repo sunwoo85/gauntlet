@@ -1,9 +1,8 @@
 """
 Gauntlet — API clients for local models and Claude Code CLI.
 
-Two paths:
-  - Local models: httpx to OpenAI-compatible /v1/chat/completions
-  - Baseline + judge: Claude Code CLI subprocess (latest Opus)
+All models run through Claude Code CLI with identical tool access (config/mcp.json).
+Built-in tools disabled. Only MCP tools (e.g. web search) if configured.
 
 Designed by SK. Built by Claude.
 """
@@ -13,15 +12,20 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import subprocess
 import time
+from pathlib import Path
 
 import httpx
 
 log = logging.getLogger("gauntlet")
 
+ROOT = Path(__file__).resolve().parent.parent
+MCP_CONFIG = str(ROOT / "config" / "mcp.json")
 
-# ── local model (OpenAI-compatible) ────────────────────────────────────
+
+# ── model detection ────────────────────────────────────────────────────
 _model_cache: dict[str, tuple[str, int | None]] = {}
 
 
@@ -43,84 +47,33 @@ async def _resolve_model(endpoint: str) -> tuple[str, int | None]:
     return name, max_len
 
 
-async def _resolve_model_id(endpoint: str, model_id: str) -> str:
-    """Resolve 'auto' to the actual model name."""
-    if model_id != "auto":
-        return model_id
-    name, _ = await _resolve_model(endpoint)
-    return name
+# ── claude code CLI (shared) ──────────────────────────────────────────
+def _build_claude_cmd(*, model: str, effort: str | None = None) -> list[str]:
+    """Build Claude Code CLI command with consistent tool isolation."""
+    cmd = [
+        "claude", "-p",
+        "--model", model,
+        "--tools", "",
+        "--mcp-config", MCP_CONFIG,
+        "--strict-mcp-config",
+        "--permission-mode", "bypassPermissions",
+        "--output-format", "json",
+    ]
+    if effort:
+        cmd.extend(["--effort", effort])
+    return cmd
 
 
-async def call_local(
-    endpoint: str,
-    model_id: str,
-    system: str,
-    messages: list[dict],
-    *,
-    max_tokens: int | None = None,
-    sampling: dict | None = None,
-    timeout: float = 600,
-) -> dict:
-    """Send a chat completion to a local OpenAI-compatible endpoint."""
-    model_id = await _resolve_model_id(endpoint, model_id)
-    payload = {
-        "model": model_id,
-        "messages": [{"role": "system", "content": system}, *messages],
-        "stream": False,
-    }
-    if max_tokens is not None:
-        payload["max_tokens"] = max_tokens
-    if sampling:
-        payload.update(sampling)
-
-    t0 = time.monotonic()
-    async with httpx.AsyncClient(timeout=timeout) as client:
-        resp = await client.post(endpoint, json=payload)
-        resp.raise_for_status()
-
-    data = resp.json()
-    ms = (time.monotonic() - t0) * 1000
-    msg = data["choices"][0]["message"]
-    content = msg.get("content") or ""
-    reasoning = msg.get("reasoning") or ""
-    model = data.get("model", model_id)
-    usage = data.get("usage", {})
-
-    result = {
-        "content": content,
-        "model": model,
-        "duration_ms": round(ms, 1),
-        "tokens": {
-            "prompt": usage.get("prompt_tokens"),
-            "completion": usage.get("completion_tokens"),
-        },
-    }
-    if reasoning:
-        result["reasoning"] = reasoning
-    return result
-
-
-# ── claude code CLI ────────────────────────────────────────────────────
-def call_claude_code(
-    prompt: str,
-    *,
-    model: str = "opus",
-    effort: str = "max",
-    timeout: int = 600,
-) -> dict:
-    """Run a prompt through Claude Code CLI."""
+def _run_claude(prompt: str, cmd: list[str], *, timeout: int, env: dict | None = None) -> dict:
+    """Execute Claude Code CLI and parse the response."""
     t0 = time.monotonic()
     result = subprocess.run(
-        [
-            "claude", "-p",
-            "--model", model,
-            "--effort", effort,
-            "--output-format", "json",
-        ],
+        cmd,
         input=prompt,
         capture_output=True,
         text=True,
         timeout=timeout,
+        env=env,
     )
 
     ms = (time.monotonic() - t0) * 1000
@@ -133,7 +86,7 @@ def call_claude_code(
 
     return {
         "content": content,
-        "model": data.get("model", model),
+        "model": data.get("model") or cmd[cmd.index("--model") + 1],
         "duration_ms": round(ms, 1),
         "tokens": {
             "prompt": data.get("usage", {}).get("input_tokens"),
@@ -142,10 +95,42 @@ def call_claude_code(
     }
 
 
-async def call_claude_code_async(
+# ── local model via claude code CLI ──────────────────────────────────
+def call_local_via_claude_code(
     prompt: str,
     *,
+    base_url: str,
+    model_id: str,
     timeout: int = 600,
 ) -> dict:
-    """Async wrapper around call_claude_code."""
-    return await asyncio.to_thread(call_claude_code, prompt, timeout=timeout)
+    """Run a prompt through Claude Code CLI pointed at a local model."""
+    cmd = _build_claude_cmd(model=model_id)
+    env = {**os.environ, "ANTHROPIC_BASE_URL": base_url}
+    return _run_claude(prompt, cmd, timeout=timeout, env=env)
+
+
+async def call_local_via_claude_code_async(
+    prompt: str,
+    *,
+    base_url: str,
+    model_id: str,
+    timeout: int = 600,
+) -> dict:
+    """Async wrapper around call_local_via_claude_code."""
+    return await asyncio.to_thread(
+        call_local_via_claude_code, prompt,
+        base_url=base_url, model_id=model_id, timeout=timeout,
+    )
+
+
+# ── baseline + judge via claude code CLI ─────────────────────────────
+def call_claude_code(
+    prompt: str,
+    *,
+    model: str = "opus",
+    effort: str = "max",
+    timeout: int = 600,
+) -> dict:
+    """Run a prompt through Claude Code CLI (baselines and judge)."""
+    cmd = _build_claude_cmd(model=model, effort=effort)
+    return _run_claude(prompt, cmd, timeout=timeout)
