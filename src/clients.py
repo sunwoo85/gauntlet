@@ -67,21 +67,28 @@ def _build_claude_cmd(*, model: str, effort: str | None = None) -> list[str]:
 def _run_claude(prompt: str, cmd: list[str], *, timeout: int, env: dict | None = None) -> dict:
     """Execute Claude Code CLI and parse the response."""
     t0 = time.monotonic()
-    result = subprocess.run(
+    proc = subprocess.Popen(
         cmd,
-        input=prompt,
-        capture_output=True,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         text=True,
-        timeout=timeout,
         env=env,
+        start_new_session=True,
     )
+    try:
+        stdout, stderr = proc.communicate(input=prompt, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        os.killpg(proc.pid, 9)
+        proc.wait()
+        raise
 
     ms = (time.monotonic() - t0) * 1000
 
-    if result.returncode != 0:
-        raise RuntimeError(f"Claude Code failed: {result.stderr[:500]}")
+    if proc.returncode != 0:
+        raise RuntimeError(f"Claude Code failed: {stderr[:500]}")
 
-    data = json.loads(result.stdout)
+    data = json.loads(stdout)
     content = data.get("result", "")
 
     return {
