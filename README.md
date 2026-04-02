@@ -142,7 +142,8 @@ All generated data is gitignored.
 
 | Version | Date | Description |
 |---------|------|-------------|
-| 2026.04 | 2026-04-02 | Initial release — 10 pilot questions, automated judge pipeline, A/B CLI |
+| 0.1.1 | 2026-04-02 | Unified all models through Claude Code CLI, added example configs |
+| 0.1.0 | 2026-04-02 | Initial release — 10 pilot questions, automated judge pipeline, A/B CLI |
 
 ## License
 

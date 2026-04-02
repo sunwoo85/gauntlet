@@ -1,6 +1,6 @@
 [project]
 name = "gauntlet"
-version = "2026.04"
+version = "0.1.1"
 description = "Real-world LLM quality benchmark. Can your model run the Gauntlet?"
 license = "MIT"
 requires-python = ">=3.11"
