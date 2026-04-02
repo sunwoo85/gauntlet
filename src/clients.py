@@ -101,7 +101,7 @@ def call_local_via_claude_code(
     *,
     base_url: str,
     model_id: str,
-    timeout: int = 600,
+    timeout: int = 900,
 ) -> dict:
     """Run a prompt through Claude Code CLI pointed at a local model."""
     cmd = _build_claude_cmd(model=model_id)
@@ -114,7 +114,7 @@ async def call_local_via_claude_code_async(
     *,
     base_url: str,
     model_id: str,
-    timeout: int = 600,
+    timeout: int = 900,
 ) -> dict:
     """Async wrapper around call_local_via_claude_code."""
     return await asyncio.to_thread(
