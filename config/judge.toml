@@ -1,0 +1,32 @@
+# Gauntlet — baseline and judge configuration
+# Latest Opus via Claude Code CLI serves as both baseline and judge.
+#
+# Designed by SK. Built by Claude.
+
+# ── baselines ───────────────────────────────────────────────────────
+# Three Claude models as baselines. All run via Claude Code CLI.
+# The first baseline listed is the primary hurdle (highlighted in leaderboard).
+# Baselines refresh each month — cached responses only reused within the same month.
+
+[[baselines]]
+model = "opus"
+effort = "high"
+timeout_sec = 900
+
+[[baselines]]
+model = "sonnet"
+effort = "high"
+timeout_sec = 600
+
+[[baselines]]
+model = "haiku"
+effort = "high"
+timeout_sec = 300
+
+# ── judge ───────────────────────────────────────────────────────────
+[judge]
+model = "opus"
+effort = "max"
+prompt_version = "v1"
+prompt_file = "prompts/judge_v1.md"
+timeout_sec = 900

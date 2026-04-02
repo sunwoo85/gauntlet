@@ -1,0 +1,17 @@
+[project]
+name = "gauntlet"
+version = "2026.04"
+description = "Real-world LLM quality benchmark. Can your model run the Gauntlet?"
+license = "MIT"
+requires-python = ">=3.11"
+
+dependencies = [
+    "httpx>=0.28.0",
+    "pydantic>=2.11.0",
+    "rich>=13.0",
+]
+
+[project.scripts]
+gauntlet = "src.runner:main"
+gauntlet-judge = "src.judge:main"
+gauntlet-ab = "src.ab_cli:main"

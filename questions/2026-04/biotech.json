@@ -1,0 +1,154 @@
+[
+  {
+    "id": "GAUNTLET-BIO-E-001",
+    "version": "2026-04",
+    "category": "biotech",
+    "subcategory": "email_triage",
+    "difficulty": 1,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are an email triage assistant for a biotech company. Summarize the email in 3-5 bullet points, classify it, and determine if follow-up is needed.\n\nRespond in this exact JSON format:\n{\n  \"summary\": [\"bullet 1\", \"bullet 2\", ...],\n  \"classification\": \"Business Development\" | \"Research and Development\" | \"Other\",\n  \"follow_up_required\": true | false,\n  \"task_title\": \"short action item or null\",\n  \"due_date\": \"YYYY-MM-DD or null\"\n}",
+      "messages": [
+        {
+          "role": "user",
+          "content": "From: marie.dupont@pharmaeurope.com\nTo: partnerships@novabio.com\nSubject: NovaBio - PharmaEurope: Update meeting ARVO\nDate: 2026-03-26\n\n_____________________________________________\nMicrosoft Teams meeting\nJoin on your computer, mobile app or room device\nClick here to join the meeting\nMeeting ID: 412 893 7621\nPasscode: 8xNwPq\nDial in by phone: +33 1 70 37 01 23\n_____________________________________________"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "```json\n{\n  \"summary\": [\n    \"Microsoft Teams meeting invite from Marie Dupont at PharmaEurope to NovaBio partnerships team\",\n    \"Meeting purpose is an update discussion related to the ARVO conference\",\n    \"No agenda or substantive content included — only Teams join credentials (ID: 412 893 7621)\",\n    \"Dial-in number is a French (+33) line, suggesting PharmaEurope is hosting\",\n    \"Email body contains no specified meeting date/time — likely attached to a calendar invite not shown here\"\n  ],\n  \"classification\": \"Business Development\",\n  \"follow_up_required\": true,\n  \"task_title\": \"Confirm attendance and request agenda for PharmaEurope ARVO update meeting\",\n  \"due_date\": \"2026-04-03\"\n}\n```",
+      "key_facts": [
+        "Summary must identify this as a Microsoft Teams meeting invite from Marie Dupont at PharmaEurope to NovaBio's partnerships team",
+        "Summary must note the meeting is related to an ARVO conference update",
+        "Classification must be 'Business Development'",
+        "follow_up_required must be true",
+        "task_title must reference confirming/attending the PharmaEurope ARVO meeting or requesting an agenda"
+      ],
+      "disqualifiers": [
+        "Classification is anything other than 'Business Development'",
+        "follow_up_required is false",
+        "Response is not valid JSON or does not follow the specified schema"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "email",
+        "meeting_invite",
+        "partnership",
+        "json_output"
+      ],
+      "estimated_tokens": {
+        "input": 250,
+        "ideal_output": 200
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-BIO-M-001",
+    "version": "2026-04",
+    "category": "biotech",
+    "subcategory": "email_triage",
+    "difficulty": 2,
+    "language": {
+      "input": "ko",
+      "expected_output": "ko",
+      "bilingual_required": true
+    },
+    "prompt": {
+      "system": "You are an email triage assistant for a biotech company. Summarize the email in 3-5 bullet points in Korean, classify it, and determine if follow-up is needed.\n\nToday's date is 2026-04-02.\n\nRespond in this exact JSON format:\n{\n  \"summary\": [\"bullet 1\", \"bullet 2\", ...],\n  \"classification\": \"Business Development\" | \"Research and Development\" | \"Other\",\n  \"follow_up_required\": true | false,\n  \"task_title\": \"short action item or null\",\n  \"due_date\": \"YYYY-MM-DD or null\"\n}",
+      "messages": [
+        {
+          "role": "user",
+          "content": "From: j.park@novabio.com\nTo: research-team@novabio.com\nCC: cso@novabio.com\nSubject: RE: 구두평가 발표 자료 최종 검토\nDate: 2026-04-02\n\n연구팀 여러분,\n\n전달해주신 피드백 감사합니다.\n주요 수정사항 반영 완료했습니다:\n\n1. NB-201 Phase 1/2a efficacy 슬라이드에서 p-value 표기 수정\n2. 제조공정 개선 관련 원가 절감 데이터를 표 형식으로 변경\n3. 경쟁사 대비 차별성 섹션에 최신 ARVO 포스터 데이터 추가\n\n금요일까지 최종본 공유 드리겠습니다.\n감사합니다.\n\n박정우 드림\n\n---\nOriginal Message:\nFrom: cso@novabio.com\nDate: 2026-04-01\nSubject: RE: 구두평가 발표 자료 최종 검토\n\n박정우 책임님,\n초안 잘 받았습니다. 몇 가지 코멘트:\n- efficacy 데이터 p-value가 0.03인데 0.003으로 확인 부탁\n- 원가 절감 부분은 bullet보다 표가 나을 것 같습니다\n- 경쟁사 분석에 ARVO 발표 데이터도 포함시켜 주세요\n\n한진석"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "\n\n```json\n{\n  \"summary\": [\n    \"구두평가 발표 자료에 대한 연구팀 피드백을 반영하여 수정 완료\",\n    \"NB-201 Phase 1/2a efficacy 슬라이드의 p-value 표기 오류 수정 (0.03 → 0.003)\",\n    \"제조공정 개선 관련 원가 절감 데이터를 표 형식으로 변경\",\n    \"경쟁사 차별성 섹션에 최신 ARVO 포스터 데이터 추가\",\n    \"금요일(2026-04-03)까지 최종본 공유 예정\"\n  ],\n  \"classification\": \"Research and Development\",\n  \"follow_up_required\": true,\n  \"task_title\": \"구두평가 발표 자료 최종본 수령 및 검토\",\n  \"due_date\": \"2026-04-03\"\n}\n```",
+      "key_facts": [
+        "Summary bullet points must be written in Korean and capture the core content: feedback incorporation, p-value correction, cost reduction data reformatted to table, ARVO poster data added, and final version delivery by Friday",
+        "Classification must be 'Research and Development'",
+        "follow_up_required must be true, since the final version is expected by Friday and needs review",
+        "due_date must be '2026-04-03' (the Friday following the email date of 2026-04-02)",
+        "task_title must reference reviewing or receiving the final presentation materials (구두평가 발표 자료 최종본)"
+      ],
+      "disqualifiers": [
+        "Classification is not 'Research and Development' (e.g., classified as 'Business Development' or 'Other')",
+        "due_date is missing, null, or any date other than '2026-04-03'",
+        "Summary bullet points are not in Korean"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "email",
+        "korean",
+        "internal",
+        "R&D",
+        "json_output"
+      ],
+      "estimated_tokens": {
+        "input": 500,
+        "ideal_output": 300
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-BIO-H-001",
+    "version": "2026-04",
+    "category": "biotech",
+    "subcategory": "competitive_intelligence",
+    "difficulty": 3,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are a competitive intelligence analyst at a gene therapy company developing treatments for Geographic Atrophy (GA). Provide thorough, investment-grade analysis.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Our competitor, OcuComplement Biosciences, just released their Phase 3 FORTRESS trial results for OCB-500 (a C1q inhibitor for GA) at the Retina Society meeting. Here are the key data points from the press release:\n\n- 680 patients randomized 2:1 (OCB-500 vs sham), 18-month primary endpoint\n- Primary endpoint met: 28% reduction in GA lesion growth vs sham (p=0.0003)\n- Secondary endpoint: 41% reduction in low-luminance visual acuity loss (p=0.008)\n- Subgroup analysis: greatest benefit in patients with smaller baseline lesions (<4 mm²), 39% reduction\n- Safety: 2 cases of intraocular inflammation (0.4%), no endophthalmitis\n- Dosing: monthly intravitreal injection\n\nOur company's approach is fundamentally different — we use AAV gene therapy (one-time subretinal injection) targeting complement factor H overexpression, currently in Phase 2.\n\nAnalyze:\n1. How strong is the FORTRESS data vs existing GA treatments?\n2. What does this mean for our gene therapy positioning?\n3. Where are the vulnerabilities in OCB-500's profile?\n4. Strategic recommendations for our program"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "# Competitive Intelligence Brief: OCB-500 FORTRESS Trial Results\n\n## 1. Strength of FORTRESS Data vs Existing GA Treatments\n\n**Benchmarking against approved therapies:**\n\n| Metric | Syfovre (pegcetacoplan) | Izervay (avacincaptad pegol) | OCB-500 (FORTRESS) |\n|---|---|---|---|\n| GA growth reduction | 17–22% (OAKS/DERBY, 24mo) | 14–18% (GATHER1/2, 12mo) | **28% (18mo)** |\n| Functional endpoint | Not met | Not met | **41% LLVA preservation (p=0.008)** |\n| Inflammation rate | ~3% (IOP + vasculitis signal) | ~1–2% | **0.4%** |\n| Dosing | Monthly/EOM IVT | Monthly IVT | Monthly IVT |\n| Endophthalmitis | Rare but reported | Rare but reported | None reported |\n\n**Key takeaways on data strength:**\n\n- **The 28% reduction is best-in-class for GA lesion growth.** Both approved C3/C5 inhibitors struggled to break 22%. OCB-500 hitting 28% with p=0.0003 in a well-powered trial (n=680) is statistically robust and clinically differentiated.\n- **The functional endpoint is the real headline.** Neither Syfovre nor Izervay has convincingly demonstrated functional visual benefit — this has been the central critique of the entire complement inhibition class. A 41% reduction in low-luminance VA loss (p=0.008) is the first credible signal that slowing GA anatomically translates to preserving vision. Expect this to dominate KOL discussion.\n- **The safety profile is remarkably clean.** Syfovre carries a boxed-warning-level concern around retinal vasculitis and ischemic optic neuropathy. OCB-500 at 0.4% inflammation with zero endophthalmitis in 450+ treated patients is a meaningful differentiator, though the dataset is still relatively small for rare events.\n- **C1q as a target appears validated.** This is the first large dataset supporting C1q inhibition upstream in the classical pathway. The mechanism spares the alternative pathway (unlike C3 inhibition), which may explain the cleaner safety profile — the alternative pathway drives much of the innate immune defense that broad complement inhibition disrupts.\n\n**Caveat:** 18-month data is intermediate. Durability at 24–36 months is critical. Both Syfovre and Izervay showed effect attenuation over time. Whether OCB-500's efficacy curve holds or flattens will be decisive.\n\n**Verdict: Strong data. Not transformative, but clearly best-in-class among complement inhibitors. The functional endpoint gives OCB-500 a regulatory and commercial narrative the approved therapies lack.**\n\n---\n\n## 2. Implications for Our Gene Therapy Positioning\n\n**The competitive landscape just got harder, but our value proposition may have actually sharpened.**\n\n**Threats:**\n\n- OCB-500 raises the efficacy bar. Our Phase 2 data will now be benchmarked against 28% growth reduction, not 17–22%. If our CFH overexpression approach delivers only comparable anatomic outcomes, the one-time-injection convenience argument alone may not be enough.\n- If OCB-500 gets approval with a functional endpoint claim, it captures the narrative — retinal specialists will have a \"proven\" option. Our Phase 3 enrollment could face headwinds from patients and investigators who default to an approved therapy.\n- Payer dynamics shift: an approved monthly injection with functional data becomes the comparator for health-economic models. Our gene therapy pricing (likely $50K–$150K+) must demonstrate superiority or durable equivalence, not just convenience.\n\n**Opportunities:**\n\n- **Durability is our moat.** Monthly intravitreal injections for a chronic, progressive disease in elderly patients is a massive compliance burden. Real-world adherence to monthly anti-VEGF regimens is notoriously poor (~40–60% of patients drop below label frequency by year 2). OCB-500's efficacy in the real world will almost certainly underperform the trial. A one-time gene therapy that provides continuous CFH expression addresses this directly.\n- **Subretinal delivery avoids the IVT inflammation/infection risk entirely** for the chronic dosing phase. Our surgical procedure carries upfront risk, but eliminates years of repeated injection-associated risk.\n- **CFH overexpression is mechanistically broader** than C1q blockade. CFH regulates the alternative pathway amplification loop — arguably the dominant driver of chronic GA progression. C1q inhibition blocks classical pathway initiation, which may not fully address the self-amplifying alternative pathway activity in advanced disease. This could explain why OCB-500's benefit was greatest in smaller lesions (the classical pathway may be more dominant in early disease).\n\n---\n\n## 3. Vulnerabilities in OCB-500's Profile\n\n**Exploit these in our positioning and trial design:**\n\n### A. The Small-Lesion Subgroup Signal\nThe 39% reduction in patients with lesions <4 mm² vs 28% overall means patients with larger lesions (likely the majority in real-world GA populations) saw substantially less benefit — back-calculating, the >4 mm² subgroup likely saw ~20–22% reduction, which is barely differentiated from Syfovre. This suggests **OCB-500 may be an early-disease drug**, leaving advanced GA patients underserved. If our gene therapy shows consistent efficacy across lesion sizes, that is a major differentiator.\n\n### B. Monthly Dosing Burden\nNo treat-and-extend or less-frequent dosing arm was reported. Monthly IVT for GA — a slowly progressive disease in patients aged 70–85+ — is a hard sell commercially:\n- Transportation burden for elderly patients\n- Caregiver time\n- Cumulative injection risk over years of treatment\n- Real-world adherence decay\n\nEvery year of monthly injections that OCB-500 requires strengthens the gene therapy durability argument.\n\n### C. Functional Endpoint Fragility\nThe LLVA endpoint at p=0.008 is significant but not overwhelming. LLVA is a surrogate functional measure, not standard BCVA. Regulators (especially EMA) may push back on the clinical meaningfulness. Also, 18 months may be too short to demonstrate durable functional preservation — if this signal attenuates at 24 months, the narrative collapses.\n\n### D. Incomplete Safety Characterization\n- n=450 treated patients is underpowered to detect events occurring at <0.5% frequency\n- No long-term safety data beyond 18 months\n- C1q has roles in synaptic pruning, neuroprotection, and clearance of apoptotic cells in the retina — chronic C1q suppression may have delayed neurodegenerative consequences not visible in an 18-month trial\n- Post-marketing safety signals have damaged both Syfovre and other complement drugs; OCB-500 is not immune to this risk\n\n### E. No Biomarker or Companion Diagnostic Strategy\nNo reported complement biomarker data (C1q levels, complement activation markers) means no patient selection strategy. If only a subset of GA patients have classical-pathway-driven disease, OCB-500 may be treating many patients who won't respond — diluting real-world effectiveness.\n\n---\n\n## 4. Strategic Recommendations\n\n### Near-Term (Next 6 months)\n\n1. **Redesign Phase 3 endpoints to exploit OCB-500's weaknesses.**\n   - Include a co-primary functional endpoint (LLVA or microperimetry) — don't cede the functional narrative.\n   - Enrich enrollment to include larger baseline lesions (>4 mm²) where OCB-500 underperforms. If we show consistent efficacy across lesion sizes, the positioning writes itself.\n   - Include complement biomarker panel (CFH levels, Ba, Bb, C3a, C5a, sC5b-9) to build a precision medicine story.\n\n2. **Generate head-to-head health economic models now.**\n   - Model one-time gene therapy vs 5–10 years of monthly OCB-500 injections.\n   - Include real-world adherence decay, caregiver costs, and cumulative adverse event probability.\n   - A break-even analysis at $100K gene therapy price vs monthly OCB-500 (likely $1,500–2,500/injection) will favor gene therapy by year 3–4 even with conservative assumptions.\n\n3. **Accelerate durability data from Phase 2.**\n   - Our strongest counter-narrative is multi-year CFH expression from a single treatment. Publish or present any 24–36 month Phase 2 durability data as fast as possible, even in a small cohort.\n\n### Medium-Term (6–18 months)\n\n4. **Consider a combination-friendly positioning.**\n   - Rather than positioning solely as a competitor to OCB-500, explore whether one-time CFH gene therapy could serve as a \"foundation\" that reduces or eliminates the need for chronic complement inhibition. A sequential strategy (gene therapy + short course of C1q/C3/C5 inhibitor) could capture both the gene therapy and combination markets.\n\n5. **Pursue a regulatory meeting to discuss accelerated pathway options.**\n   - If our Phase 2 data show strong anatomic + functional signals, the FDA may entertain accelerated approval given the unmet need in larger-lesion GA where OCB-500 underperforms.\n\n6. **Engage KOLs proactively on the durability narrative.**\n   - Retinal specialists already managing anti-VEGF injection fatigue in wet AMD patients are primed to hear the one-and-done message. Build advisory boards around the real-world burden of chronic complement inhibition before OCB-500 establishes treatment patterns.\n\n### Risk Mitigation\n\n7. **Prepare for the scenario where OCB-500 moves to a less-frequent dosing regimen.** If they run a treat-and-extend study showing quarterly dosing is sufficient, the convenience gap narrows significantly. Our Phase 3 must be designed to win on efficacy and durability, not convenience alone.\n\n---\n\n**Bottom line:** OCB-500's FORTRESS data is the strongest in GA to date, but it is an incremental advance on a fundamentally limited approach (chronic injection for a chronic disease in elderly patients). Our gene therapy has a differentiated value proposition — but only if we demonstrate durable efficacy across lesion sizes and build a compelling health-economic case. The window to establish positioning is 12–18 months before OCB-500's likely regulatory filing.",
+      "key_facts": [
+        "OCB-500's 28% GA lesion growth reduction is best-in-class, exceeding Syfovre (17-22%) and Izervay (14-18%), and the 41% low-luminance visual acuity preservation is a first-in-class functional signal that neither approved therapy has achieved",
+        "The subgroup signal showing greatest benefit in smaller lesions (<4 mm²) implies substantially reduced efficacy in larger lesions (~20-22% by back-calculation), revealing OCB-500 as potentially an early-disease drug and creating a positioning opportunity for the gene therapy in advanced GA",
+        "The gene therapy's core strategic advantage is durability vs. chronic monthly injections — real-world adherence to monthly IVT regimens in elderly patients decays significantly, meaning OCB-500's trial efficacy will likely underperform in practice, and health-economic modeling over 5-10 years should favor a one-time treatment",
+        "Strategic recommendations must include actionable steps such as incorporating functional co-primary endpoints in Phase 3 design, enriching enrollment with larger baseline lesions where OCB-500 underperforms, accelerating publication of long-term Phase 2 durability data, and building health-economic models comparing one-time gene therapy cost vs. years of monthly injections",
+        "OCB-500's safety profile (0.4% inflammation, no endophthalmitis) is cleaner than approved competitors but the 18-month dataset with ~450 treated patients is underpowered for rare events, and chronic C1q suppression may have delayed consequences given C1q's roles in neuroprotection and synaptic pruning"
+      ],
+      "disqualifiers": [
+        "Failing to benchmark OCB-500 against existing approved GA treatments (Syfovre/pegcetacoplan and Izervay/avacincaptad pegol) and recognize that the 28% reduction and functional endpoint represent best-in-class results",
+        "Dismissing or ignoring the gene therapy's durability and one-time dosing advantage as the central differentiator against a chronic monthly injection regimen in elderly patients",
+        "Providing analysis that contains fundamental scientific errors about complement biology (e.g., confusing C1q/classical pathway with C3/C5/alternative pathway mechanisms) or mischaracterizing the competitive landscape in ways that would lead to flawed strategic decisions"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "competitive_intel",
+        "ophthalmology",
+        "GA",
+        "gene_therapy",
+        "clinical_trial"
+      ],
+      "estimated_tokens": {
+        "input": 500,
+        "ideal_output": 1200
+      }
+    }
+  }
+]

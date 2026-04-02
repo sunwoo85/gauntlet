@@ -1,0 +1,53 @@
+# Gauntlet — scoring weights and rubrics
+#
+# Designed by SK. Built by Claude.
+
+[weights]
+factual_accuracy = 0.25
+reasoning_depth = 0.20
+practical_usefulness = 0.20
+instruction_following = 0.15
+communication_quality = 0.10
+bilingual_competence = 0.10
+
+[rubric.factual_accuracy]
+5 = "All facts correct, no hallucination"
+4 = "Minor inaccuracy that doesn't affect conclusion"
+3 = "One material error but mostly correct"
+2 = "Multiple errors, partially unreliable"
+1 = "Fundamentally incorrect or fabricated"
+
+[rubric.reasoning_depth]
+5 = "Multi-step reasoning, considers edge cases, identifies nuances"
+4 = "Sound reasoning with minor gaps"
+3 = "Adequate reasoning but surface-level"
+2 = "Shallow or partially flawed logic"
+1 = "No meaningful reasoning, jumps to conclusion"
+
+[rubric.practical_usefulness]
+5 = "Directly actionable, saves the professional real time"
+4 = "Useful with minor additional work needed"
+3 = "Somewhat helpful but requires significant rework"
+2 = "Marginally useful, mostly generic"
+1 = "Not useful for the intended professional task"
+
+[rubric.instruction_following]
+5 = "Follows all constraints perfectly (format, length, language, scope)"
+4 = "Follows most constraints, one minor deviation"
+3 = "Follows some constraints, misses important ones"
+2 = "Significant deviations from instructions"
+1 = "Ignores instructions entirely"
+
+[rubric.communication_quality]
+5 = "Clear structure, appropriate tone, well-organized, concise"
+4 = "Good communication with minor issues"
+3 = "Adequate but could be clearer or better organized"
+2 = "Confusing structure or inappropriate tone"
+1 = "Incoherent or entirely wrong register"
+
+[rubric.bilingual_competence]
+5 = "Native-level fluency in target language, correct terminology, natural phrasing"
+4 = "Near-native with minor awkwardness"
+3 = "Understandable but clearly non-native patterns"
+2 = "Frequent errors affecting comprehension"
+1 = "Wrong language used, or unintelligible"

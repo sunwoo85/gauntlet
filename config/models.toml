@@ -1,0 +1,13 @@
+# Gauntlet — endpoint to benchmark
+# Model ID, max_tokens, and concurrency are auto-detected.
+# max_tokens = max(32768, context_length / 4)
+# concurrency = context_length / max_tokens (override below if needed)
+# sampling uses server defaults unless overridden below.
+#
+# Designed by SK. Built by Claude.
+
+[endpoint]
+url = "http://localhost:1319/v1/chat/completions"
+# concurrency = 8
+# [endpoint.sampling]
+# temperature = 0

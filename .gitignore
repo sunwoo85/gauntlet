@@ -1,0 +1,10 @@
+responses/
+scores/
+results/
+ab_results/
+__pycache__/
+*.egg-info/
+venv/
+*.pyc
+.env
+.claude/

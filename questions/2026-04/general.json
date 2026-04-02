@@ -1,0 +1,204 @@
+[
+  {
+    "id": "GAUNTLET-GEN-E-001",
+    "version": "2026-04",
+    "category": "general",
+    "subcategory": "ml_ecosystem",
+    "difficulty": 1,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are a helpful assistant with expertise in machine learning infrastructure and open-source model deployment.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to run quantized LLMs locally on my Mac (Apple Silicon M4 Max, 128GB RAM). I see models on HuggingFace from \"mlx-community\" — are these reliable? How do they compare to GGUF models from bartowski? Which should I prefer for local inference?"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "Both are reliable and widely used. Here's the practical breakdown:\n\n## MLX-Community Models\n\n- **Format:** MLX (Apple's ML framework, native to Apple Silicon)\n- **Who:** Community-maintained org that converts popular models to MLX format\n- **Runs via:** `mlx-lm`, LM Studio, or directly in Python with the `mlx` library\n- **Strengths:**\n  - Native Metal acceleration — no translation layer, runs directly on Apple GPU\n  - Unified memory architecture is fully exploited (CPU/GPU share the same memory pool)\n  - Typically faster token generation on Apple Silicon vs GGUF for equivalent quants\n  - Easy Python API if you want to script things\n- **Weaknesses:**\n  - Apple Silicon only — not portable\n  - Smaller ecosystem and fewer tools built around it\n  - Quantization options are sometimes narrower (though 4-bit/8-bit are standard)\n\n## Bartowski GGUF Models\n\n- **Format:** GGUF (llama.cpp ecosystem)\n- **Who:** bartowski is one of the most prolific and trusted quantizers — consistent quality, good metadata, wide quant range (Q2 through Q8, imatrix-calibrated)\n- **Runs via:** llama.cpp, ollama, LM Studio, koboldcpp, etc.\n- **Strengths:**\n  - Huge ecosystem — virtually every local inference tool supports GGUF\n  - More quantization levels to choose from (Q4_K_M, Q5_K_M, Q6_K, etc.)\n  - imatrix quantization (bartowski's standard practice) preserves quality better at low bit widths\n  - Cross-platform — same files work on Linux/Windows/Mac\n- **Weaknesses:**\n  - On Apple Silicon, llama.cpp uses Metal but through a compatibility layer — slightly less efficient than native MLX\n  - The performance gap has narrowed significantly but MLX still tends to edge it out on throughput\n\n## Practical Recommendation for M4 Max 128GB\n\n**With 128GB, you can run very large models.** That's the real story here — you can fit 70B-class models at Q4/Q5, or even 100B+ at lower quants.\n\n**Pick based on your workflow:**\n\n| Priority | Choose |\n|---|---|\n| Maximum speed on Mac | MLX |\n| Widest tool compatibility (ollama, etc.) | GGUF (bartowski) |\n| Best quality at low quant (Q3/Q4) | GGUF (bartowski, imatrix) |\n| Python scripting / embedding in apps | MLX |\n| You might also run on Linux/cloud | GGUF |\n\n**If you're just chatting with models locally**, both work fine through LM Studio (which supports both formats). Start with MLX for speed. Fall back to GGUF if a specific model isn't available in MLX format or you need a specific quant level.\n\n**If you're using ollama**, that's GGUF-land — bartowski's quants are the go-to.\n\n## Quality Notes\n\n- At Q4_K_M and above, quality differences between MLX and GGUF quants of the same source model are negligible in practice.\n- bartowski's imatrix calibration gives a meaningful quality edge at Q3 and below vs naive quantization.\n- MLX-community models are generally straightforward conversions and are reliable, but the org is community-run — verify the source model matches what you expect (check the model card).\n\n**TL;DR:** Both are trustworthy. MLX is faster on your hardware, GGUF is more versatile. With 128GB RAM you're in an enviable position — most models will run comfortably either way.",
+      "key_facts": [
+        "MLX models run natively on Apple Silicon via Metal acceleration, fully exploiting the unified memory architecture, making them generally faster for token generation on Mac compared to GGUF",
+        "GGUF models (llama.cpp ecosystem) have a much larger ecosystem and tool compatibility (ollama, LM Studio, koboldcpp, etc.) and are cross-platform, while MLX is Apple Silicon only",
+        "bartowski is a well-regarded quantizer known for imatrix-calibrated quantizations that preserve quality better at lower bit widths, with a wide range of quant levels (Q2 through Q8)",
+        "With 128GB RAM on M4 Max, the user can run very large models (70B+ class at Q4/Q5 quantization) comfortably with either format",
+        "At Q4_K_M and above, quality differences between MLX and GGUF quantizations of the same source model are negligible in practice — the choice depends on workflow priorities (speed vs compatibility)"
+      ],
+      "disqualifiers": [
+        "Claiming either mlx-community or bartowski models are unreliable or untrustworthy without basis",
+        "Stating that GGUF is faster than MLX on Apple Silicon, or that MLX does not use Metal/GPU acceleration",
+        "Claiming 128GB RAM is insufficient to run large (70B+) quantized models locally"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "mlx",
+        "gguf",
+        "apple_silicon",
+        "quantization",
+        "local_inference"
+      ],
+      "estimated_tokens": {
+        "input": 150,
+        "ideal_output": 400
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-GEN-E-002",
+    "version": "2026-04",
+    "category": "general",
+    "subcategory": "media_processing",
+    "difficulty": 1,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are a helpful assistant with expertise in multimedia tools and command-line utilities.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I have a 90-minute conference presentation video (presentation.mp4, 1080p, 1.2GB). I need to:\n1. Extract a keyframe every 30 seconds as a PNG\n2. Extract the audio as a separate WAV file\n3. Split the audio into 10-minute chunks for transcription\n\nGive me the exact ffmpeg commands."
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "Here are the exact commands:\n\n**1. Extract a keyframe every 30 seconds as PNG**\n\n```bash\nffmpeg -i presentation.mp4 -vf \"fps=1/30\" -frame_pts 1 keyframe_%04d.png\n```\n\nThis outputs `keyframe_0001.png`, `keyframe_0002.png`, etc. (180 frames for 90 minutes).\n\n**2. Extract audio as WAV**\n\n```bash\nffmpeg -i presentation.mp4 -vn -acodec pcm_s16le -ar 44100 -ac 1 presentation.wav\n```\n\n`-vn` strips video, `-ac 1` gives mono (better for transcription), `-ar 44100` sets 44.1kHz sample rate.\n\n**3. Split audio into 10-minute chunks**\n\n```bash\nffmpeg -i presentation.wav -f segment -segment_time 600 -c copy chunk_%02d.wav\n```\n\nThis produces `chunk_00.wav` through `chunk_08.wav` (9 chunks for 90 minutes). `-c copy` avoids re-encoding.\n\n**All three in one shot** (if you want to avoid reading the source file multiple times):\n\n```bash\nffmpeg -i presentation.mp4 \\\n  -vf \"fps=1/30\" -frame_pts 1 keyframe_%04d.png \\\n  -vn -acodec pcm_s16le -ar 44100 -ac 1 presentation.wav\n\nffmpeg -i presentation.wav -f segment -segment_time 600 -c copy chunk_%02d.wav\n```\n\nThe segmenting step still needs to run after the WAV is created since it reads from it.\n\n**Notes:**\n- If you want keyframes only at actual I-frames nearest to 30s intervals (faster, no decoding), replace `-vf \"fps=1/30\"` with `-skip_frame nokey -vf \"select='eq(pict_type,I)*gte(t-prev_selected_t,30)'\" -vsync vfr`.\n- For transcription APIs with a file size limit, add `-ar 16000` to step 2 — 16kHz mono is sufficient for speech-to-text and cuts file size significantly.",
+      "key_facts": [
+        "Command to extract frames at 30-second intervals using fps=1/30 or equivalent select filter, outputting to PNG files with a sequential naming pattern",
+        "Command to extract audio as WAV using -vn to strip video, with appropriate audio codec (e.g., pcm_s16le) and sample rate settings",
+        "Command to split the audio into 10-minute (600-second) segments using -f segment -segment_time 600 or equivalent, with -c copy to avoid re-encoding",
+        "All commands use correct ffmpeg syntax with -i for input and proper output file naming patterns",
+        "The segmenting step must operate on the extracted WAV (or be sequenced after audio extraction), not directly produce segments from the video in a single pass"
+      ],
+      "disqualifiers": [
+        "Commands contain fundamental ffmpeg syntax errors that would prevent execution (e.g., wrong flag names, missing required arguments)",
+        "Frame extraction interval is not 30 seconds or audio segment duration is not 10 minutes as specified",
+        "Missing one or more of the three requested tasks (keyframe extraction, audio extraction as WAV, audio splitting into chunks)"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "ffmpeg",
+        "video",
+        "audio",
+        "transcription"
+      ],
+      "estimated_tokens": {
+        "input": 150,
+        "ideal_output": 300
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-GEN-M-001",
+    "version": "2026-04",
+    "category": "general",
+    "subcategory": "hardware_comparison",
+    "difficulty": 2,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are a helpful assistant with deep knowledge of consumer hardware, GPUs, and PC gaming performance.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I'm looking for a portable setup that can handle modern AAA gaming (targeting 1080p 60fps on high settings) and also serve as a local AI inference machine for running 7B-13B parameter LLMs.\n\nCompare these options:\n1. ROG Ally X (AMD Z1 Extreme, 24GB RAM)\n2. Framework Laptop 16 with AMD dGPU module (RX 7700S)\n3. Mini PC (like Minisforum UM790 Pro) + external GPU dock with RTX 4060\n4. MacBook Pro M4 Pro 48GB (for AI inference only, gaming secondary)\n\nFor each, evaluate: gaming performance, AI inference capability, portability, and total cost. Give me a clear recommendation with a comparison table."
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "# Portable Gaming + Local LLM Inference: Head-to-Head\n\n## Comparison Table\n\n| | **ROG Ally X** | **Framework 16 (RX 7700S)** | **Mini PC + eGPU (RTX 4060)** | **MacBook Pro M4 Pro 48GB** |\n|---|---|---|---|---|\n| **1080p/60/High AAA** | Misses target (~35-50fps, need Medium) | Hits target in most titles | Hits target (minus ~15% eGPU overhead) | Mostly unviable (limited macOS ports) |\n| **7B LLM Inference** | Workable via CPU (llama.cpp), ~8-12 tok/s Q4 | ROCm usable but finicky, ~20+ tok/s on GPU | CUDA gold standard, ~30+ tok/s | Best-in-class via MLX, ~35+ tok/s |\n| **13B LLM Inference** | Fits in 24GB (Q4) but slow, ~4-6 tok/s | 8GB VRAM too small, spills to RAM | 8GB VRAM too small, spills to RAM | 48GB unified RAM loads it easily, ~20+ tok/s |\n| **Max Model Size** | ~13B Q4 (24GB unified) | ~7B Q4 on GPU / 13B with RAM offload | ~7B Q4 on GPU / 13B with RAM offload | **30B+ Q4** (48GB unified) |\n| **Portability** | Pocket-sized handheld | 16\" laptop, ~5.5 lbs | Desk-bound (dock + GPU + monitor) | Premium ultrabook, great battery |\n| **Software Ecosystem (AI)** | llama.cpp CPU only | ROCm (maturing, some rough edges) | **CUDA (best ecosystem)** | MLX + llama.cpp (excellent, growing fast) |\n| **Total Cost (est.)** | **~$800** | ~$2,000-2,300 | ~$1,100-1,400 (no monitor) | ~$2,400-2,500 |\n\n## Per-Option Breakdown\n\n### 1. ROG Ally X — Budget Portable, Compromises Everywhere\nThe Z1 Extreme's RDNA 3 iGPU (Radeon 780M) is impressive *for integrated graphics* but will **not** sustain 1080p/60/High in demanding AAA titles — expect Medium settings or FSR upscaling. The 24GB unified RAM is a surprising asset for LLMs: a Q4-quantized 13B model fits, but you're running inference on CPU cores alone, so expect single-digit tok/s for 13B. Good enough for casual experimentation, not serious use.\n\n### 2. Framework 16 + RX 7700S — Best All-Rounder on Paper\nThe RX 7700S is a legitimate mobile dGPU that meets your 1080p/60/High target in most AAA games. The problem is AI: 8GB VRAM limits you to 7B Q4 models on-GPU, and ROCm on RDNA 3 mobile is functional but still has compatibility gaps with some inference frameworks. You'll spend time debugging setup. Configurable RAM (up to 64GB) helps with CPU-offloaded 13B inference. Modular design is great but the laptop is large and heavy.\n\n### 3. Mini PC + eGPU — Best AI Stack, Worst Portability\nThe RTX 4060 desktop gives you the full CUDA ecosystem — every LLM tool just works out of the box. Thunderbolt 4 eGPU bandwidth tax is real (~10-20% perf hit) but you'll still hit 60fps at 1080p/High in most titles. The 8GB VRAM ceiling is the same as the Framework for model size. The UM790 Pro with 64GB RAM gives good CPU-offload headroom. **Dealbreaker**: this is a desk setup with a dock, GPU enclosure, and external display. \"Portable\" only in the sense that you can pack it up.\n\n### 4. MacBook Pro M4 Pro 48GB — AI Inference King, Gaming Afterthought\nThis is the **clear winner for LLM inference**. 48GB unified memory lets you run 13B models at higher quantization or even 30B+ at Q4 — no other option here comes close. MLX and llama.cpp on Apple Silicon are both mature and fast. The trade-off is brutal on the gaming side: macOS has a thin AAA library, Game Porting Toolkit covers some titles but with inconsistent performance, and you're paying premium price for a machine that can't fulfill half your stated goal.\n\n## Recommendation\n\n**There is no single device that nails both requirements.** Here's what I'd actually suggest depending on your priority:\n\n**If you want one device, prioritize gaming → Framework 16.** It's the only option that genuinely meets 1080p/60/High *and* can run 7B models on-GPU. Accept that 13B will require CPU offloading and ROCm has friction.\n\n**If AI inference is the real priority → MacBook Pro M4 Pro 48GB.** Nothing in this comparison touches it for running 13B+ models locally. Supplement gaming with a cloud gaming service (GeForce NOW, Xbox Cloud) or accept the limited macOS library.\n\n**Best bang-for-buck combo → ROG Ally X ($800) + used Mini PC with an RTX 3060 12GB ($400-500).** The Ally handles portable gaming (at Medium settings), the 3060's 12GB VRAM with full CUDA runs 13B Q4 models natively on-GPU — and the total is under $1,300. This two-device split actually outperforms every single-device option across both workloads.",
+      "key_facts": [
+        "ROG Ally X cannot reliably hit 1080p/60fps on High settings in AAA games due to its integrated GPU (RDNA 3 iGPU), requiring reduced settings or upscaling, but its 24GB unified RAM allows fitting quantized 13B models albeit with slow CPU-only inference",
+        "MacBook Pro M4 Pro 48GB is the strongest option for LLM inference due to its large unified memory enabling 30B+ parameter models at Q4 quantization, but is severely limited for AAA gaming due to macOS's thin game library",
+        "Framework 16 with RX 7700S and the RTX 4060 eGPU setup both have an 8GB VRAM limitation that restricts on-GPU LLM inference to roughly 7B Q4 models, with 13B requiring RAM offloading",
+        "No single device optimally satisfies both AAA gaming at 1080p/60/High and robust local 13B+ LLM inference — the answer should acknowledge this trade-off and tailor recommendations to the user's priority",
+        "The comparison should include a structured evaluation (ideally a table) covering gaming performance, AI inference capability, portability, and approximate total cost for each option"
+      ],
+      "disqualifiers": [
+        "Claiming the ROG Ally X can consistently run AAA games at 1080p/60fps on High settings without caveats about its integrated GPU limitations",
+        "Stating that the MacBook Pro M4 Pro is a strong AAA gaming option or ignoring its fundamental macOS gaming ecosystem limitations",
+        "Claiming 8GB VRAM GPUs (RX 7700S or RTX 4060) can comfortably run 13B parameter models fully on-GPU without offloading to system RAM"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "hardware",
+        "gaming",
+        "AI_inference",
+        "comparison"
+      ],
+      "estimated_tokens": {
+        "input": 250,
+        "ideal_output": 1000
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-GEN-H-001",
+    "version": "2026-04",
+    "category": "general",
+    "subcategory": "infrastructure",
+    "difficulty": 3,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are a senior infrastructure engineer with deep expertise in LLM serving frameworks, GPU clusters, and container orchestration.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I'm running vLLM on an NVIDIA Grace Blackwell server (ARM64/aarch64, 2x B200 GPUs, 128GB HBM3e each). I want to also run a community fork of vLLM that adds custom logits processors for a specific model family, but this fork only builds on x86_64.\n\nI've analyzed the fork and the additions are:\n1. A Python-only logits processor class (~200 lines)\n2. A model registration entry in the model loader\n3. A custom chat template parser\n\nNone of these touch CUDA kernels — they're all pure Python sitting on top of vLLM's existing infrastructure.\n\nHow can I get this working on my aarch64 server without maintaining a full fork? Give me a concrete, step-by-step approach. Consider:\n- The official vLLM aarch64 Docker image works fine\n- I don't want to rebuild vLLM from source\n- I need this to survive vLLM updates"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "This is a clean case — pure Python on top of an unchanged CUDA/C++ stack means you can treat the fork's additions as a **plugin package** that overlays the stock vLLM installation. Here's the concrete approach:\n\n## Strategy: Extract into a standalone pip-installable package\n\n### Step 1: Extract the three components from the fork\n\n```\nvllm-custom-logits/\n├── pyproject.toml\n├── src/\n│   └── vllm_custom_logits/\n│       ├── __init__.py\n│       ├── logits_processor.py    # ~200 line class, copied verbatim\n│       ├── model_loader_patch.py  # model registration hook\n│       └── chat_template.jinja    # template file\n└── tests/\n```\n\n### Step 2: Wire into vLLM's plugin system\n\nvLLM discovers plugins via the `vllm.general_plugins` entry point group. Your package registers itself at import time — no vLLM source modifications needed.\n\n**`pyproject.toml`:**\n\n```toml\n[build-system]\nrequires = [\"setuptools>=68.0\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"vllm-custom-logits\"\nversion = \"0.1.0\"\nrequires-python = \">=3.10\"\ndependencies = [\"vllm\"]  # doesn't pin version — works with whatever's installed\n\n[project.entry-points.\"vllm.general_plugins\"]\ncustom_logits = \"vllm_custom_logits:register\"\n\n[tool.setuptools.package-data]\nvllm_custom_logits = [\"*.jinja\"]\n```\n\n**`src/vllm_custom_logits/__init__.py`:**\n\n```python\nfrom importlib.resources import files\n\n\ndef register():\n    \"\"\"Called by vLLM's plugin discovery at startup.\"\"\"\n    from vllm_custom_logits.model_loader_patch import register_custom_model\n    register_custom_model()\n\n\ndef get_chat_template_path() -> str:\n    \"\"\"Returns absolute path to the bundled chat template.\"\"\"\n    return str(files(\"vllm_custom_logits\").joinpath(\"chat_template.jinja\"))\n```\n\n### Step 3: Model registration without patching vLLM\n\n**`src/vllm_custom_logits/model_loader_patch.py`:**\n\n```python\ndef register_custom_model():\n    from vllm import ModelRegistry\n\n    # This is the public API — survives updates.\n    # Maps your model arch string to the implementation class path.\n    ModelRegistry.register_model(\n        \"YourCustomModelForCausalLM\",\n        \"vllm_custom_logits.logits_processor:YourCustomModelClass\",\n    )\n```\n\n### Step 4: Logits processor\n\n**`src/vllm_custom_logits/logits_processor.py`:**\n\nCopy the ~200-line class verbatim from the fork. If it subclasses any vLLM internal, keep the import path. The key thing: make sure it only imports from vLLM's **public Python API** (the `vllm` top-level package), not from internal modules like `vllm._core` or compiled extensions. Audit the imports:\n\n```bash\n# Run this against the extracted file — every import must resolve on aarch64\ngrep -E \"^from |^import \" logits_processor.py\n```\n\nIf the fork imports from `vllm.model_executor.models`, that's fine — those are pure Python model definitions. If it imports from anything under `vllm._C` or links to a `.so`, you have a problem (but you said it doesn't).\n\n### Step 5: Docker integration\n\nYou have two options, depending on how you manage deployments:\n\n**Option A — Derived image (recommended for production):**\n\n```dockerfile\nFROM vllm/vllm-openai:latest-arm64   # official aarch64 image\n\nCOPY vllm-custom-logits/ /opt/vllm-custom-logits/\nRUN pip install --no-deps /opt/vllm-custom-logits/\n\n# Chat template is now baked in; reference it at runtime:\n# --chat-template $(python -c \"from vllm_custom_logits import get_chat_template_path; print(get_chat_template_path())\")\n```\n\n**Option B — Volume mount (good for dev iteration):**\n\n```bash\n# Install the package in editable mode inside the running container\ndocker run --gpus all \\\n  -v /path/to/vllm-custom-logits:/opt/vllm-custom-logits \\\n  vllm/vllm-openai:latest-arm64 \\\n  bash -c \"pip install -e /opt/vllm-custom-logits && python -m vllm.entrypoints.openai.api_server --model your-model --chat-template \\$(python -c 'from vllm_custom_logits import get_chat_template_path; print(get_chat_template_path())')\"\n```\n\n### Step 6: Surviving vLLM updates\n\nThe fragility points and how to handle each:\n\n| Component | API stability | Mitigation |\n|---|---|---|\n| `ModelRegistry.register_model()` | Public API, stable | Pin minimum vLLM version in `pyproject.toml` if signature changes |\n| Logits processor interface | Stable (`LogitsProcessor` protocol) | Your class just needs `__call__(token_ids, logits)` |\n| Chat template | Jinja file, no API coupling | Fully decoupled — survives any update |\n| Internal model base classes | Can shift between releases | **This is your one risk** — see below |\n\n**The one thing to watch:** If your logits processor subclasses something like `vllm.model_executor.models.llama.LlamaForCausalLM`, that internal path can move between vLLM releases. Mitigate by:\n\n```python\n# In your logits_processor.py — fail loudly on import mismatch\ntry:\n    from vllm.model_executor.models.llama import LlamaForCausalLM\nexcept ImportError:\n    raise ImportError(\n        \"vllm internal model path changed. Check the vLLM changelog and \"\n        \"update the import in vllm_custom_logits/logits_processor.py\"\n    )\n```\n\nAdd a CI check that installs the latest vLLM nightly + your package and runs a smoke test:\n\n```bash\n# In your CI pipeline\npip install vllm --pre  # latest nightly\npip install ./vllm-custom-logits\npython -c \"from vllm_custom_logits import register; register(); print('OK')\"\n```\n\n### Summary\n\nYou're extracting ~3 files from the fork into a `pip install`-able package that uses vLLM's official plugin entry point (`vllm.general_plugins`) for zero-touch registration. No source rebuild. No architecture dependency. The official aarch64 image remains your base, and your overlay is pure Python that rides on top. The only maintenance burden is checking import paths when you bump vLLM versions, which the CI smoke test catches automatically.",
+      "key_facts": [
+        "Extract the pure Python components from the fork into a standalone pip-installable package rather than maintaining a full fork or rebuilding vLLM from source",
+        "Use vLLM's plugin/entry point system (vllm.general_plugins) and ModelRegistry.register_model() API for zero-touch registration without modifying vLLM source",
+        "Integrate with the official aarch64 Docker image via a derived Dockerfile or volume mount, installing the overlay package on top",
+        "Identify that the main fragility/maintenance risk is internal vLLM import paths changing between releases, and mitigate with CI smoke tests against vLLM updates",
+        "Verify that all imports in the extracted code resolve on aarch64 and only use pure Python APIs (no _C extensions or compiled .so dependencies)"
+      ],
+      "disqualifiers": [
+        "Suggesting to rebuild vLLM from source on aarch64 or cross-compile the fork, when the question explicitly states no source rebuild and the additions are pure Python",
+        "Suggesting to use QEMU/emulation or an x86_64 container to run the fork on aarch64, which would sacrifice GPU access or performance",
+        "Failing to recognize that pure Python additions require no architecture-specific changes and can simply be overlaid on the existing aarch64 installation"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "vllm",
+        "docker",
+        "aarch64",
+        "infrastructure",
+        "gpu"
+      ],
+      "estimated_tokens": {
+        "input": 350,
+        "ideal_output": 800
+      }
+    }
+  }
+]

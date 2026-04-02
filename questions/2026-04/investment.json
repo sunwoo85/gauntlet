@@ -1,0 +1,159 @@
+[
+  {
+    "id": "GAUNTLET-INV-E-001",
+    "version": "2026-04",
+    "category": "investment",
+    "subcategory": "company_analysis",
+    "difficulty": 1,
+    "language": {
+      "input": "ko",
+      "expected_output": "ko",
+      "bilingual_required": true
+    },
+    "prompt": {
+      "system": "You are a healthcare portfolio manager at a Korean asset management firm. Respond in Korean.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "다음 기업 정보를 바탕으로 투자 관점에서의 핵심 요약을 작성해주세요.\n\n기업명: 바이오셀텍 (BioSelTech)\n코스닥 상장 / 시가총액 3,200억원\n주요 파이프라인: BST-201 (CAR-T 세포치료제, 미만성 거대 B세포 림프종 적응증)\n- 임상 2상 진행 중 (환자 등록 70% 완료)\n- 경쟁사 대비 제조 원가 40% 절감 주장\n- 최근 일본 다이이치산쿄와 공동연구 MOU 체결\n- 2026년 매출 전무, 영업손실 180억원 예상\n- 현금성 자산 520억원 (런웨이 약 2.5년)\n\n3~5개 bullet으로 요약해주세요."
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "## 바이오셀텍 (BioSelTech) 투자 핵심 요약\n\n- **파이프라인 진척도 양호**: 핵심 자산 BST-201(CAR-T, DLBCL 적응증) 임상 2상 환자 등록 70% 완료로, 2026년 하반기~2027년 상반기 중 톱라인 데이터 확보가 예상되며 이는 단기 주가 촉매(catalyst)로 작용 가능\n\n- **원가 경쟁력 주장에 대한 검증 필요**: 기존 CAR-T 대비 제조 원가 40% 절감을 주장하나, 상업화 단계에서의 실증 데이터가 부재한 상황이므로 GMP 스케일업 시 원가 구조 유지 여부가 핵심 리스크 요인\n\n- **다이이치산쿄 MOU의 전략적 의미**: 일본 대형 제약사와의 공동연구 MOU는 기술 플랫폼에 대한 외부 검증(external validation) 시그널이나, MOU 단계로서 구속력 있는 라이선스 계약 전환 여부를 모니터링해야 함\n\n- **재무 구조**: 매출 전무에 연간 영업손실 180억원 수준으로 전형적인 임상 단계 바이오텍 프로파일. 현금성 자산 520억원 기준 런웨이 약 2.5년으로, 임상 2상 완료까지는 커버 가능하나 피벗 임상(3상) 진입 시 추가 자금 조달(유상증자·기술료 수취 등)이 불가피\n\n- **밸류에이션 고려사항**: 시가총액 3,200억원은 임상 2상 CAR-T 바이오텍 기준 글로벌 피어 대비 보수적 수준이나, 국내 코스닥 바이오 섹터 센티먼트 및 임상 데이터 리드아웃 타이밍에 따른 변동성 확대 가능성 상존",
+      "key_facts": [
+        "BST-201 CAR-T 임상 2상 진행 상황(환자 등록 70%)을 언급하고, 이것이 투자 관점에서 갖는 의미(촉매/catalyst 가능성 등)를 분석",
+        "제조 원가 40% 절감 주장에 대해 단순 수용이 아닌 검증 필요성 또는 리스크 요인으로서의 비판적 분석 포함",
+        "다이이치산쿄 MOU의 전략적 의미를 외부 검증 시그널로 평가하되, MOU 단계의 한계(구속력 부재 등)를 함께 지적",
+        "재무 구조 분석: 매출 전무, 영업손실 180억원, 현금성 자산 520억원 기반 런웨이 2.5년의 의미와 추가 자금 조달 가능성 언급",
+        "시가총액 3,200억원에 대한 밸류에이션 관점의 코멘트 또는 투자 판단에 필요한 리스크/기회 요인 종합"
+      ],
+      "rubric_overrides": {},
+      "disqualifiers": [
+        "한국어가 아닌 다른 언어로 작성된 경우",
+        "투자 관점의 분석 없이 주어진 기업 정보를 단순 나열하거나 재서술만 한 경우",
+        "핵심 재무 리스크(매출 전무, 영업손실, 런웨이 제한)를 전혀 언급하지 않거나 무비판적으로 긍정만 서술한 경우"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "korean",
+        "biotech",
+        "portfolio_summary"
+      ],
+      "estimated_tokens": {
+        "input": 400,
+        "ideal_output": 500
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-INV-M-001",
+    "version": "2026-04",
+    "category": "investment",
+    "subcategory": "deal_analysis",
+    "difficulty": 2,
+    "language": {
+      "input": "en",
+      "expected_output": "en",
+      "bilingual_required": false
+    },
+    "prompt": {
+      "system": "You are an investment analyst at a healthcare-focused fund. Your fund holds positions in ophthalmology companies.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Roche just announced the acquisition of ComplementX Therapeutics for $4.2B. ComplementX's lead asset is CX-700, a complement C3 inhibitor for Geographic Atrophy (GA) currently in Phase 3.\n\nOur portfolio company, VectorVis, is developing VV-101, an AAV gene therapy for wet and dry AMD. VectorVis had been in early partnership discussions with ComplementX about a combination therapy approach.\n\nDo a deep dive on this deal. What are the implications for VectorVis? Consider:\n1. What this deal signals about Roche's ophthalmology strategy\n2. Impact on VectorVis's partnership pipeline\n3. Competitive landscape shifts\n4. Potential opportunities and risks"
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "# Investment Analysis: Roche/ComplementX Acquisition — Implications for VectorVis\n\n## Deal Summary\n\n| | |\n|---|---|\n| **Acquirer** | Roche |\n| **Target** | ComplementX Therapeutics |\n| **Price** | $4.2B |\n| **Lead Asset** | CX-700 (complement C3 inhibitor, GA, Phase 3) |\n| **Portfolio Impact** | VectorVis (VV-101, AAV gene therapy, wet/dry AMD) |\n\n---\n\n## 1. What This Signals About Roche's Ophthalmology Strategy\n\n**Roche is building a dominant, multi-modal AMD franchise.** This deal isn't an isolated bet — it's the next logical brick in a wall:\n\n- **Existing franchise:** Roche/Genentech already owns the anti-VEGF corridor via Vabysmo (faricimab, bispecific VEGF-A/Ang-2), which is rapidly displacing legacy Lucentis/Eylea in wet AMD and DME. Vabysmo generated ~$4B+ in 2025 revenue.\n- **The gap:** Roche had *no* dry AMD/GA asset. GA is a ~$5–8B peak-sales opportunity with only two approved therapies (Apellis's SYFOVRE and Astellas's Izervay), both with modest efficacy and high injection burden. The market is wide open for improved C3 or alternative mechanisms.\n- **The signal:** At $4.2B for a Phase 3 asset, Roche is paying a premium that implies high confidence in CX-700's differentiation — likely better efficacy, longer durability, or a more favorable safety profile vs. SYFOVRE (which has the CNV conversion safety overhang). This valuation is anchored by the Astellas/Iveric Bio precedent (~$5.9B for an *approved* C5 inhibitor).\n\n**Strategic read:** Roche wants to be the one-stop shop for retinal disease — anti-VEGF for wet AMD/DME, complement inhibition for GA, and potentially combination approaches spanning both. This is a \"platform dominance\" play, not a pipeline gap-fill.\n\n**Key question for VectorVis:** Roche now has commercial infrastructure, KOL relationships, and payer access across *both* wet and dry AMD. Any company competing in this space now faces a more formidable integrated competitor.\n\n---\n\n## 2. Impact on VectorVis's Partnership Pipeline\n\nThis is the most immediate and tangible risk. Three dimensions:\n\n### a) The ComplementX Partnership Is Effectively Dead\n\nVectorVis's early-stage combination therapy discussions with ComplementX are almost certainly over in their current form. ComplementX is now a Roche subsidiary. Any continuation would mean:\n\n- Negotiating with Roche BD, not a mid-cap biotech — fundamentally different power dynamics, timelines, and deal structures\n- Roche gaining deep visibility into VV-101 data, manufacturing, and IP — a significant competitive intelligence risk given Roche's own ophthalmology ambitions\n- Roche has no obvious incentive to enable VectorVis when they could develop combination approaches internally or pursue gene therapy acquisitions on their own terms\n\n**Assessment:** Probability of a VectorVis–Roche/ComplementX partnership: **<10%.** VectorVis should treat this pathway as closed and reallocate BD resources.\n\n### b) The Broader Partnership Market Just Shifted\n\nThe positive interpretation: this deal *validates* combination approaches in AMD and signals that large pharma sees multi-mechanism strategies as the future. Other potential partners may be more receptive now.\n\n**New BD targets for VectorVis to prioritize:**\n\n| Partner | Rationale | Fit |\n|---|---|---|\n| **Apellis** | Has SYFOVRE (C3 inhibitor) but facing competitive pressure from CX-700/Roche. A gene therapy combination could be a differentiation play | High |\n| **Astellas** | Has Izervay (C5 inhibitor), may want to counter Roche's expanded GA franchise with novel combinations | Medium-High |\n| **AbbVie/Allergan** | Strong retinal commercial presence but thin late-stage AMD pipeline post-VEGF | Medium |\n| **Novartis** | Has Beovu but has struggled with safety; may look to gene therapy as a leapfrog | Medium |\n| **Regeneron** | Eylea franchise under biosimilar pressure; gene therapy partnership could extend relevance | Lower (likely to build internally) |\n\n**Key insight:** Apellis is the most natural new partner. They are now the *most threatened* company in GA — Roche will bring massive commercial muscle behind CX-700. Apellis needs differentiation urgently, and a gene therapy combination (one-time VV-101 + complement inhibition) could be a compelling narrative. VectorVis BD should be on the phone with Apellis this week.\n\n### c) VectorVis's Leverage Has Changed — In Both Directions\n\n- **Negative:** Loss of a near-term partnership catalyst, which may have been part of the investment thesis\n- **Positive:** VectorVis is now one of the few independent gene therapy platforms in ophthalmology. Scarcity value increases. If Roche's deal triggers a \"land grab\" in ocular gene therapy, VectorVis could see inbound interest or even become an acquisition target itself\n\n---\n\n## 3. Competitive Landscape Shifts\n\n### Revised GA/AMD Competitive Map\n\n```\n                        INJECTION-BASED                    ONE-TIME/DURABLE\n                   ┌─────────────────────────┐     ┌──────────────────────────┐\n                   │                         │     │                          │\n  COMPLEMENT       │  Apellis (SYFOVRE)      │     │                          │\n  PATHWAY          │  Astellas (Izervay)     │     │  [White space - no       │\n                   │  >>>Roche/CX (CX-700)<<<│     │   approved complement    │\n                   │                         │     │   gene therapies]        │\n                   │                         │     │                          │\n  ANTI-VEGF /      │  Roche (Vabysmo)        │     │  VectorVis (VV-101) ◄── │\n  MULTI-MECHANISM  │  Regeneron (Eylea)      │     │  4D Molecular (4D-150)   │\n                   │  Biosimilars incoming   │     │  Adverum (ADVM-022)      │\n                   │                         │     │                          │\n                   └─────────────────────────┘     └──────────────────────────┘\n```\n\n**Key shifts post-deal:**\n\n1. **Roche becomes the 800-lb gorilla** spanning both columns on the injection side — Vabysmo for wet AMD + CX-700 for GA. No other company has this breadth.\n\n2. **Apellis and Astellas are weaker.** Their approved GA products now face a future competitor backed by Roche's ~$10B ophthalmology commercial engine. Both may seek partnerships or M&A to bolster their positions.\n\n3. **Gene therapy's strategic value increases.** The injection-based landscape is consolidating around large pharma. The \"durable/one-time treatment\" corridor remains fragmented and independently held — making it the logical next target for acquirers.\n\n4. **Combination therapy is validated as a thesis.** Roche didn't just buy a drug; they bought the ability to combine CX-700 with Vabysmo. This implicitly validates VectorVis's combination strategy — the question is whether VectorVis can execute it with a different partner.\n\n---\n\n## 4. Opportunities and Risks\n\n### Opportunities\n\n**O1 — Apellis partnership (near-term, high priority)**\nApellis is the most motivated potential partner in the market right now. A VV-101 + SYFOVRE combination story could help Apellis differentiate against the Roche/CX-700 threat. VectorVis should engage immediately.\n\n**O2 — Increased M&A scarcity premium**\nVectorVis is an independent ocular gene therapy company in a consolidating market. The Roche deal may trigger \"me too\" acquisitions from Novartis, AbbVie, or Regeneron looking for durable AMD assets. VectorVis's takeout premium should be repriced upward.\n\n**O3 — Combination therapy validation**\nRoche's willingness to pay $4.2B validates multi-mechanism approaches. VectorVis should emphasize in investor communications that their gene therapy platform is complementary to — not competitive with — complement inhibitors. This expands the addressable partnering universe.\n\n**O4 — Clinical trial design differentiation**\nIf VV-101 can demonstrate durable efficacy (even partial) with a single administration, it has a fundamentally different value proposition vs. chronic injections. In a world where Roche is pushing CX-700 as another injection, the \"one and done\" narrative for gene therapy becomes more compelling, not less.\n\n### Risks\n\n**R1 — Partnership vacuum (immediate)**\nThe ComplementX discussions were likely being modeled as a near-term catalyst. Their termination creates a gap in VectorVis's BD narrative. If no replacement materializes within 6–12 months, the market may discount VectorVis's partnership optionality.\n\n**R2 — Roche as a direct competitor**\nRoche could pursue internal gene therapy development or acquire a competing platform. They have the resources and the strategic motivation. If Roche acquires a gene therapy company (e.g., 4D Molecular, Adverum), VectorVis loses both a potential partner and gains a well-funded competitor.\n\n**R3 — Clinical execution risk amplified**\nIn a consolidating market, VV-101's Phase 2/3 data becomes even more binary. Strong data = acquisition target at a premium. Weak data = a company without a partner in an increasingly dominated landscape.\n\n**R4 — Combination therapy pursued without VectorVis**\nRoche could develop a Vabysmo + CX-700 combination regimen that captures most of the clinical benefit VectorVis was targeting. If injection-based combinations prove \"good enough,\" the urgency for gene therapy diminishes.\n\n---\n\n## Recommended Actions for the Fund\n\n| Priority | Action | Timeline |\n|---|---|---|\n| **1** | Engage VectorVis management on BD pivot — confirm ComplementX discussions are terminated, assess Apellis engagement | This week |\n| **2** | Reassess VectorVis position sizing — the stock likely dips on partnership loss; evaluate whether to add on weakness given increased M&A scarcity value | 1–2 weeks |\n| **3** | Monitor Roche for follow-on ophthalmology deals — a gene therapy acquisition would be a significant negative signal for VectorVis | Ongoing |\n| **4** | Model upside scenario where Apellis or Astellas approaches VectorVis for a partnership or acquisition | 1 month |\n| **5** | Track CX-700 Phase 3 data readouts — positive data strengthens the GA market thesis overall; negative data could re-open the landscape | Per clinical timeline |\n\n---\n\n## Bottom Line\n\nThis deal is a **short-term negative but medium-term positive** for VectorVis. The immediate loss of the ComplementX partnership removes a near-term catalyst, and Roche's expanded AMD presence raises the competitive bar. However, the deal validates the combination therapy thesis, increases the scarcity premium on independent ocular gene therapy platforms, and creates a newly motivated partner in Apellis. The key variable is execution — VectorVis needs to pivot its BD strategy quickly and deliver strong VV-101 clinical data. If they do both, they are more likely to be acquired at a premium in this environment than they were before the deal.\n\n**Thesis impact: HOLD, with potential to ADD on weakness below [current price - 15%].**",
+      "key_facts": [
+        "Roche is building an integrated AMD franchise combining Vabysmo (anti-VEGF, wet AMD) with CX-700 (complement inhibitor, GA/dry AMD), signaling a platform dominance strategy across retinal disease",
+        "The ComplementX partnership for VectorVis is effectively dead since ComplementX becomes a Roche subsidiary, creating unfavorable power dynamics and competitive intelligence risks",
+        "Apellis emerges as the most natural and motivated new partner for VectorVis because Roche/CX-700 directly threatens SYFOVRE's market position, creating urgency for Apellis to differentiate via combination therapy",
+        "VectorVis gains increased M&A scarcity premium as an independent ocular gene therapy platform in a consolidating market, potentially becoming an acquisition target",
+        "The deal is a short-term negative (loss of partnership catalyst) but medium-term positive (validates combination therapy thesis, increases gene therapy strategic value, creates new partnership opportunities)"
+      ],
+      "rubric_overrides": {},
+      "disqualifiers": [
+        "Failing to recognize that the ComplementX partnership is effectively terminated or suggesting it can continue unchanged under Roche ownership",
+        "Missing that Roche already has a major ophthalmology presence via Vabysmo/faricimab and that this deal creates a uniquely dominant multi-modal AMD franchise",
+        "Concluding the deal is purely negative for VectorVis without identifying any offsetting opportunities such as increased scarcity value, new partnership targets, or combination therapy validation"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "deal_analysis",
+        "ophthalmology",
+        "gene_therapy",
+        "M&A"
+      ],
+      "estimated_tokens": {
+        "input": 300,
+        "ideal_output": 800
+      }
+    }
+  },
+  {
+    "id": "GAUNTLET-INV-H-001",
+    "version": "2026-04",
+    "category": "investment",
+    "subcategory": "transcript_analysis",
+    "difficulty": 3,
+    "language": {
+      "input": "en",
+      "expected_output": "ko",
+      "bilingual_required": true
+    },
+    "prompt": {
+      "system": "You are a healthcare portfolio manager at a Korean asset management firm. Extract key investment takeaways from the following meeting transcript. Output must be in Korean.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Below is a raw transcript from an investor meeting with CellNova Therapeutics. The transcript may contain ASR errors — use your best judgment to correct and interpret. Summarize with key takeaways for my CIO in Korean.\n\nTranscript:\n\n00:01:15 김대표: 저희 CNT-301 세포치료제가 파킨슨병 적응증으로 임상 1상 2a에서 중간 결과가 나왔는데요, MDS-UPDRS Part III 스코어가 저용량군에서 기저치 대비 평균 38% 개선을 보였습니다.\n\n00:02:40 김대표: 고용량군은 아직 6개월 팔로업이 안 됐는데, 3개월 시점에서 벌써 22% 개선이 나오고 있어서 도즈 리스폰스가 확인되는 상황입니다.\n\n00:04:10 Analyst: 경쟁사인 블루록 테라퓨틱스의 bemdaneprocel 대비 어떤 차별점이 있나요?\n\n00:04:35 김대표: 블루록은 iPSC 기반이고 저희는 직접 리프로그래밍 방식이라 종양 형성 리스크가 이론적으로 낮습니다. 또한 저희 스페로이드 기술이 생착률을 높여서 단회 투여로 충분한 효과를 기대하고 있습니다.\n\n00:06:20 김대표: 현재 한국 식약처에 조건부 허가 신청을 준비하고 있고, FDA IND는 2026년 하반기 제출 목표입니다.\n\n00:08:00 Analyst: 자금 상황은 어떻습니까?\n\n00:08:15 김대표: 현재 현금이 약 280억 정도 있고, 번레이트가 분기당 35억 수준이라 2년 정도 런웨이가 확보되어 있습니다. 한국 조건부 허가가 나오면 매출이 바로 발생하니까 추가 조달 없이 가능할 수도 있습니다.\n\n00:10:30 Analyst: 제조 스케일업 관련해서는?\n\n00:10:45 김대표: 삼성바이오로직스와 CDMO 계약을 논의 중입니다. 연내 LOI 체결이 목표이고, GMP 시설은 2027년 1분기 가동 예정입니다."
+        }
+      ],
+      "context_documents": []
+    },
+    "evaluation": {
+      "reference_answer": "## CellNova Therapeutics (셀노바 테라퓨틱스) 미팅 핵심 요약\n\n**일자:** 투자자 미팅 | **대상:** CNT-301 세포치료제 (파킨슨병)\n\n---\n\n### 1. 임상 데이터 (긍정적)\n- **CNT-301** Phase 1/2a 중간결과: 저용량군 MDS-UPDRS Part III 기저치 대비 **평균 38% 개선**\n- 고용량군 3개월 시점 **22% 개선** (6개월 f/u 미완료) → **dose-response 확인**, 고용량 데이터 성숙 시 추가 upside 가능성\n- 경쟁사 BlueRock(bemdaneprocel) 대비 직접 리프로그래밍 방식으로 **종양 형성 리스크 이론적 우위** 주장, 스페로이드 기술 기반 **단회 투여** 전략\n\n### 2. 규제 일정\n- **한국 식약처 조건부 허가 신청** 준비 중 → 승인 시 즉시 매출 발생 구조\n- **FDA IND 제출 목표: 2026년 하반기** → 미국 진출 타임라인 주시 필요\n\n### 3. 재무 현황\n| 항목 | 수치 |\n|------|------|\n| 보유 현금 | ~280억 원 |\n| 분기 번레이트 | ~35억 원 |\n| 런웨이 | ~2년 (조건부 허가 시 추가 조달 불필요 가능성) |\n\n### 4. 제조 (CDMO)\n- **삼성바이오로직스**와 CDMO 계약 논의 중, 연내 LOI 체결 목표\n- GMP 시설 **2027년 Q1 가동 예정**\n\n---\n\n### 투자 시사점\n\n**긍정 요인:**\n- 임상 초기 데이터 견조, dose-response 확인은 기술 플랫폼 검증에 핵심적\n- 한국 조건부 허가 경로 활용 시 글로벌 경쟁사 대비 **조기 상업화** 가능\n- 삼성바이오 CDMO 파트너십은 제조 리스크 경감 및 **밸류에이션 리레이팅 촉매**\n\n**리스크 요인:**\n- 고용량군 6개월 데이터 미확인 — 효능 지속성 및 안전성 검증 필요\n- 직접 리프로그래밍의 종양 리스크 우위는 아직 **이론적 주장** 단계, 장기 안전성 데이터 부재\n- 조건부 허가 불발 시 런웨이 2년 내 **추가 자금 조달 필요** (희석 리스크)\n- CDMO LOI 미체결 상태 — 계약 조건 및 일정 지연 가능성\n\n**모니터링 포인트:**\n- 고용량군 6개월 f/u 데이터 (H2 2026 예상)\n- 식약처 조건부 허가 신청 및 심사 진행 상황\n- 삼성바이오 LOI 체결 여부 (연내)\n- FDA IND 제출 일정 준수 여부",
+      "key_facts": [
+        "CNT-301 Phase 1/2a 중간결과: 저용량군 MDS-UPDRS Part III 기저치 대비 평균 38% 개선, 고용량군 3개월 시점 22% 개선으로 dose-response 확인",
+        "재무 현황: 보유 현금 약 280억 원, 분기 번레이트 약 35억 원, 런웨이 약 2년 (조건부 허가 시 추가 조달 불필요 가능성 언급)",
+        "규제 일정: 한국 식약처 조건부 허가 신청 준비 중이며, FDA IND 제출 목표는 2026년 하반기",
+        "제조: 삼성바이오로직스와 CDMO 계약 논의 중, 연내 LOI 체결 목표, GMP 시설 2027년 Q1 가동 예정",
+        "경쟁사 BlueRock(bemdaneprocel) 대비 직접 리프로그래밍 방식으로 종양 형성 리스크 이론적 우위 주장 및 스페로이드 기술 기반 단회 투여 전략 차별화"
+      ],
+      "rubric_overrides": {
+        "bilingual_competence": {
+          "weight": 0.15
+        }
+      },
+      "disqualifiers": [
+        "출력이 한국어가 아닌 경우 (문제에서 명시적으로 한국어 출력 요구)",
+        "임상 수치를 잘못 기재한 경우 (예: 38%와 22%를 혼동하거나 저용량/고용량군에 잘못 귀속)",
+        "핵심 재무 데이터(현금 280억, 번레이트 35억/분기, 런웨이 2년)를 완전히 누락한 경우"
+      ]
+    },
+    "metadata": {
+      "created": "2026-04-02",
+      "tags": [
+        "transcript",
+        "korean",
+        "cell_therapy",
+        "parkinsons",
+        "clinical_data"
+      ],
+      "estimated_tokens": {
+        "input": 800,
+        "ideal_output": 800
+      }
+    }
+  }
+]
